@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Greek{% endblock %}
+
+{% block body %}
+    {% for id , post in posts %}
+        <p><a href="{{ path('blog_show', {'id': id}) }}">ID {{ id }}</a></p>
+        <p>{{ post.title }}</p>
+        <p>{{ post.text }}</p>
+    {% endfor %}
+{% endblock %}
