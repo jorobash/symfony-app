@@ -1,0 +1,30 @@
+{
+  "name": "symfony-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorobash/symfony-app.git"
+  },
+  "author": "Georgi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jorobash/symfony-app/issues"
+  },
+  "homepage": "https://github.com/jorobash/symfony-app#readme",
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.20.1",
+    "bootstrap": "^4.0.0",
+    "holderjs": "^2.9.4",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.12.9",
+    "webpack-notifier": "^1.6.0"
+  }
+}

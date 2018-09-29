@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
-
 /**
  * @Route("/micro-post")
  */
@@ -250,9 +249,9 @@ class MicroPostController
             echo chr($letter) . ", ";
         }
 
-die;
         return new Response(
             $this->twig->render('loops/loop.html.twig')
         );
     }
+
 }

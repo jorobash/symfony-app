@@ -2,19 +2,27 @@
 
 namespace App\Entity;
 
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MicroPostRepository")
  * @ORM\HasLifecycleCallbacks()
+ *
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\MicroPostRepository")
+ * @ORM\Table()
  */
 class MicroPost
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")  
+     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -22,6 +30,7 @@ class MicroPost
      * @ORM\Column(type="string", length=200)
      * @Assert\NotBlank()
      * @Assert\Length(min=2)
+     * @ORM\Column(type="string", length=280)
      */
     private $text;
 
@@ -128,6 +137,5 @@ class MicroPost
 
          $this->likedBy->add($user);
      }
-
 
 }
