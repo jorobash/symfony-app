@@ -5,15 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields="email", message="this e-mail is already used")
+ * @UniqueEntity(fields="email", message="This e-mail is already used")
  * @UniqueEntity(fields="username", message="This username is already used")
  */
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable
 {
     const ROLE_USER =  'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -92,12 +93,29 @@ class User implements UserInterface, \Serializable
      */
     private $following;
 
+    /**
+     * @ORM\Column(type="string", nullable=true, length=30)
+     */
+    private $confirmationToken;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserPreferences", cascade={"persist"})
+     */
+    private $preferences;
+
     public function __construct()
     {
-        $this->posts = new ArrayCollection();
+        $this->posts     = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->postLiked = new ArrayCollection();
+        $this->roles     = [self::ROLE_USER];
+        $this->enabled   = false;
     }
 
     public function getId(): ?int
@@ -240,7 +258,8 @@ class User implements UserInterface, \Serializable
         return serialize([
            $this->id,
            $this->username,
-           $this->password
+           $this->password,
+           $this->enabled
         ]);
     }
 
@@ -257,7 +276,8 @@ class User implements UserInterface, \Serializable
     {
         list($this->id,
             $this->username,
-            $this->password) = unserialize($serialized);
+            $this->password,
+            $this->enabled) = unserialize($serialized);
     }
 
     /**
@@ -293,7 +313,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return Collection
+     *  @return Collection
      */
     public function getFollowing()
     {
@@ -317,6 +337,89 @@ class User implements UserInterface, \Serializable
         return $this->postLiked;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
 
+    /**
+     * @param $confirmationToken
+     * @return mixed
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        return $this->confirmationToken = $confirmationToken;
+    }
 
+    /**
+     * @return bool
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param $enabled
+     * @return mixed
+     */
+    public function setEnabled($enabled)
+    {
+        return $this->enabled = $enabled;
+    }
+
+    /**
+     * Checks whether the user's account has expired.
+     * @see AccountExpiredException
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * Checks whether the user is locked.
+     * @see LockedException
+     */
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    /**
+     * Checks whether the user's credentials (password) has expired.
+     * @see CredentialsExpiredException
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * Checks whether the user is enabled.
+     * @see DisabledException
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @return UserPreferences
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    /**
+     * @param mixed $preferences
+     */
+    public function setPreferences($preferences): void
+    {
+        $this->preferences = $preferences;
+    }
 }

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 
 use App\Entity\MicroPost;
 use App\Entity\User;
+use App\Entity\UserPreferences;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
@@ -58,6 +59,11 @@ class AppFixture extends Fixture
         'I need to buy some ice cream!'
     ];
 
+    private const LANGUAGES = [
+        'en',
+        'fr'
+    ];
+
     /**
      * AppFixture constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
@@ -104,8 +110,14 @@ class AppFixture extends Fixture
             );
 
             $user->setRoles($userData['roles']);
+            $user->setEnabled(true);
 
             $this->addReference($userData['username'], $user);
+
+            $preferences = new UserPreferences();
+            $preferences->setLocale(self::LANGUAGES[rand(0,1)]);
+
+            $user->setPreferences($preferences);
 
             $manager->persist($user);
             $manager->flush();

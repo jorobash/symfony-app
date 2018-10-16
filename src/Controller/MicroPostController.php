@@ -70,12 +70,12 @@ class MicroPostController
                                 RouterInterface $router,
                                 FlashBagInterface $flashBag,
                                 AuthorizationCheckerInterface $authorizationChecker){
-		$this->twig                = $twig;
-		$this->microPostRepository = $microPostRepository;
-		$this->formFactory         = $formFactory;
-		$this->entityManager       = $entityManager;
-		$this->router              = $router;
-        $this->flashBag            = $flashBag;
+		$this->twig                 = $twig;
+		$this->microPostRepository  = $microPostRepository;
+		$this->formFactory          = $formFactory;
+		$this->entityManager        = $entityManager;
+		$this->router               = $router;
+        $this->flashBag             = $flashBag;
         $this->authorizationChecker = $authorizationChecker;
     }
 

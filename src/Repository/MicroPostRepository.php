@@ -31,7 +31,7 @@ class MicroPostRepository extends ServiceEntityRepository
            ->getQuery()
            ->getResult();
     }
-    
+
 //    /**
 //     * @return MicroPost[] Returns an array of MicroPost objects
 //     */
